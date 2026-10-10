@@ -96,6 +96,7 @@ import kotlinx.coroutines.launch
 import logcat.LogPriority
 import mihon.app.di.AppGraph
 import mihon.core.metro.metroGraph
+import mihon.fork.brightnessschedule.attachBrightnessSchedule
 import tachiyomi.core.common.Constants
 import tachiyomi.core.common.i18n.stringResource
 import tachiyomi.core.common.preference.toggle
@@ -184,6 +185,7 @@ class ReaderActivity : BaseActivity() {
         )
 
         config = ReaderConfig()
+        attachBrightnessSchedule() // Personal fork: custom brightness schedule.
         setMenuVisibility(viewModel.state.value.menuVisible)
 
         // Finish when incognito mode is disabled
