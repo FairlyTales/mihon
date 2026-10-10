@@ -86,6 +86,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -94,6 +96,7 @@ import kotlinx.coroutines.launch
 import logcat.LogPriority
 import mihon.app.di.AppGraph
 import mihon.core.metro.metroGraph
+import mihon.fork.brightnessschedule.attachBrightnessSchedule
 import tachiyomi.core.common.Constants
 import tachiyomi.core.common.i18n.stringResource
 import tachiyomi.core.common.util.system.logcat
@@ -181,6 +184,7 @@ class ReaderActivity : BaseActivity() {
         )
 
         config = ReaderConfig()
+        attachBrightnessSchedule() // Personal fork: custom brightness schedule.
         setMenuVisibility(viewModel.state.value.menuVisible)
 
         // Finish when incognito mode is disabled
@@ -864,8 +868,16 @@ class ReaderActivity : BaseActivity() {
                 .onEach(::setKeepScreenOn)
                 .launchIn(lifecycleScope)
 
+            // flatMapLatest cancels the value watcher on disable, so a sampled slider value can't re-dim afterwards.
             readerPreferences.customBrightness.changes()
-                .onEach(::setCustomBrightness)
+                .flatMapLatest { enabled ->
+                    if (enabled) {
+                        readerPreferences.customBrightnessValue.changes().sample(0.1.seconds)
+                    } else {
+                        flowOf(0)
+                    }
+                }
+                .onEach(::setCustomBrightnessValue)
                 .launchIn(lifecycleScope)
 
             combine(
@@ -895,20 +907,6 @@ class ReaderActivity : BaseActivity() {
                 window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            }
-        }
-
-        /**
-         * Sets the custom brightness overlay according to [enabled].
-         */
-        private fun setCustomBrightness(enabled: Boolean) {
-            if (enabled) {
-                readerPreferences.customBrightnessValue.changes()
-                    .sample(0.1.seconds)
-                    .onEach(::setCustomBrightnessValue)
-                    .launchIn(lifecycleScope)
-            } else {
-                setCustomBrightnessValue(0)
             }
         }
 

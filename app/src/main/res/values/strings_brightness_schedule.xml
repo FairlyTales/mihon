@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Personal fork: brightness schedule (mihon.fork.brightnessschedule). English only. -->
+    <string name="fork_brightness_schedule_group">Brightness schedule</string>
+    <string name="fork_brightness_schedule">Custom brightness schedule</string>
+    <string name="fork_brightness_schedule_summary">Turns custom brightness on at From and off at Until</string>
+    <string name="fork_brightness_schedule_same_times">From and Until are the same, so the schedule does nothing</string>
+    <string name="fork_brightness_schedule_from">From</string>
+    <string name="fork_brightness_schedule_until">Until</string>
+</resources>

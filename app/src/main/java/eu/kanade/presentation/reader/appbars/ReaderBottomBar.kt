@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import eu.kanade.tachiyomi.ui.reader.setting.ReaderOrientation
 import eu.kanade.tachiyomi.ui.reader.setting.ReadingMode
+import mihon.fork.brightnesstoggle.BrightnessToggleButton
 import mihon.icons.custommaterialsymbols.CustomMaterialSymbols
 import mihon.icons.custommaterialsymbols.rounded.CropOff
 import mihon.icons.materialsymbols.MaterialSymbols
@@ -48,6 +49,9 @@ fun ReaderBottomBar(
                 contentDescription = stringResource(MR.strings.rotation_type),
             )
         }
+
+        // Personal fork: in the middle of the bar so it can be hit blind with the screen dimmed.
+        BrightnessToggleButton()
 
         IconButton(onClick = onClickCropBorder) {
             Icon(
