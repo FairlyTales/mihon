@@ -74,6 +74,10 @@ android {
             isPseudoLocalesEnabled = true
         }
         val release = getByName("release") {
+            // Personal fork: can't share an ID with upstream's app, which is signed with a key we don't have.
+            // foss/nightly/benchmark copy this via initWith but set their own suffix.
+            applicationIdSuffix = ".personal"
+
             isMinifyEnabled = true
             isShrinkResources = true
 
