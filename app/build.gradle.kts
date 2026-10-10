@@ -125,14 +125,17 @@ android {
     sourceSets {
         getByName("nightly").res.directories.add("src/debug/res")
         getByName("benchmark").res.directories.add("src/debug/res")
+        // Personal fork: distinct launcher icon from upstream's app.
+        getByName("release").res.directories.add("src/debug/res")
     }
 
     splits {
         abi {
             isEnable = true
-            isUniversalApk = true
+            // Personal fork: only the tablet's ABI.
+            isUniversalApk = false
             reset()
-            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            include("arm64-v8a")
         }
     }
 
