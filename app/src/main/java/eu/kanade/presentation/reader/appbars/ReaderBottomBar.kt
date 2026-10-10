@@ -14,7 +14,9 @@ import mihon.icons.custommaterialsymbols.CustomMaterialSymbols
 import mihon.icons.custommaterialsymbols.rounded.CropOff
 import mihon.icons.materialsymbols.MaterialSymbols
 import mihon.icons.materialsymbols.rounded.Crop
+import mihon.icons.materialsymbols.rounded.DarkMode
 import mihon.icons.materialsymbols.rounded.Settings
+import mihon.icons.materialsymbols.roundedfilled.DarkMode
 import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.i18n.stringResource
 
@@ -24,6 +26,8 @@ fun ReaderBottomBar(
     onClickReadingMode: () -> Unit,
     orientation: ReaderOrientation,
     onClickOrientation: () -> Unit,
+    customBrightnessEnabled: Boolean,
+    onClickCustomBrightness: () -> Unit,
     cropEnabled: Boolean,
     onClickCropBorder: () -> Unit,
     onClickSettings: () -> Unit,
@@ -46,6 +50,18 @@ fun ReaderBottomBar(
             Icon(
                 imageVector = orientation.icon,
                 contentDescription = stringResource(MR.strings.rotation_type),
+            )
+        }
+
+        // Personal fork: kept in the middle of the bar so it can be hit blind with the screen dimmed.
+        IconButton(onClick = onClickCustomBrightness) {
+            Icon(
+                imageVector = if (customBrightnessEnabled) {
+                    MaterialSymbols.RoundedFilled.DarkMode
+                } else {
+                    MaterialSymbols.Rounded.DarkMode
+                },
+                contentDescription = stringResource(MR.strings.pref_custom_brightness),
             )
         }
 

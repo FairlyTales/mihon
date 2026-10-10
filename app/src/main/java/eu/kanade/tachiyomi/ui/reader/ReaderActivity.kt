@@ -98,6 +98,7 @@ import mihon.app.di.AppGraph
 import mihon.core.metro.metroGraph
 import tachiyomi.core.common.Constants
 import tachiyomi.core.common.i18n.stringResource
+import tachiyomi.core.common.preference.toggle
 import tachiyomi.core.common.util.system.logcat
 import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.util.collectAsState
@@ -454,6 +455,9 @@ class ReaderActivity : BaseActivity() {
         val isPagerType = ReadingMode.isPagerType(viewModel.getMangaReadingMode())
         val cropEnabled = if (isPagerType) cropBorderPaged else cropBorderWebtoon
 
+        // Personal fork: custom brightness toggle.
+        val customBrightness by readerPreferences.customBrightness.collectAsState()
+
         val verticalNavigatorModes by readerPreferences.verticalNavigator.collectAsState()
         val verticalNavigator = verticalNavigatorModes.contains(
             ReadingMode.fromPreference(viewModel.getMangaReadingMode()),
@@ -510,6 +514,12 @@ class ReaderActivity : BaseActivity() {
                 viewModel.getMangaOrientation(resolveDefault = false),
             ),
             onClickOrientation = viewModel::openOrientationModeSelectDialog,
+            customBrightnessEnabled = customBrightness,
+            onClickCustomBrightness = {
+                val enabled = readerPreferences.customBrightness.toggle()
+                menuToggleToast?.cancel()
+                menuToggleToast = toast(if (enabled) MR.strings.on else MR.strings.off)
+            },
             cropEnabled = cropEnabled,
             onClickCropBorder = {
                 val enabled = viewModel.toggleCropBorders()

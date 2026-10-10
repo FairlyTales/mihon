@@ -71,6 +71,9 @@ fun ReaderAppBars(
     onClickReadingMode: () -> Unit,
     orientation: ReaderOrientation,
     onClickOrientation: () -> Unit,
+    // Personal fork: custom brightness toggle.
+    customBrightnessEnabled: Boolean,
+    onClickCustomBrightness: () -> Unit,
     cropEnabled: Boolean,
     onClickCropBorder: () -> Unit,
     onClickSettings: () -> Unit,
@@ -170,6 +173,8 @@ fun ReaderAppBars(
                     onClickReadingMode = onClickReadingMode,
                     orientation = orientation,
                     onClickOrientation = onClickOrientation,
+                    customBrightnessEnabled = customBrightnessEnabled,
+                    onClickCustomBrightness = onClickCustomBrightness,
                     cropEnabled = cropEnabled,
                     onClickCropBorder = onClickCropBorder,
                     onClickSettings = onClickSettings,
